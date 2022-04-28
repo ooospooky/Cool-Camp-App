@@ -1,9 +1,10 @@
 import { StyleSheet, Text, View,Style,TouchableOpacity } from 'react-native'
 import React,{useEffect,useState} from 'react'
+import { MMKV } from 'react-native-mmkv'
 
 import {db} from '../firebase-config'
 import  {collection, getDocs,setDoc, getDoc, addDoc, updateDoc, deleteDoc, doc} from 'firebase/firestore';
-
+const storage = new MMKV()
 const HomeScreen = ({ navigation,route}) => {
   if(route.params)console.log('route',route.params.data);
   const [campData,setCampData]  = useState([])
@@ -13,6 +14,8 @@ const HomeScreen = ({ navigation,route}) => {
     const response =  data.docs.map((doc)=> ({...doc.data(),id:doc.id}));
     setCampData(response)
   },[route])    //[route] to check if data change,if true it will rerender list
+
+  storage.set('user.name', 'Marc')
   return (
     <View style={styles.container}>
 
@@ -21,10 +24,9 @@ const HomeScreen = ({ navigation,route}) => {
         onPress={() => navigation.navigate('Login')}
         >
           <Text style={{color:'red'}}>Login</Text>
-        </TouchableOpacity>
-
-
-
+      </TouchableOpacity>
+    <Text>123</Text>
+   
       {/* List camp */}
       {campData.map((data)=>{
         return (
