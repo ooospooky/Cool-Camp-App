@@ -25,7 +25,7 @@
       <dict>
         <key>CFBundleURLSchemes</key>
         <array>
-          <string>a</string>
+          <string>com.bm414148.firstapp</string>
         </array>
       </dict>
     </array>

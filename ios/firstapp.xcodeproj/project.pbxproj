@@ -320,8 +320,8 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "a";
-				PRODUCT_NAME = a;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.bm414148.firstapp";
+				PRODUCT_NAME = "firstapp";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -346,8 +346,8 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "a";
-				PRODUCT_NAME = a;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.bm414148.firstapp";
+				PRODUCT_NAME = "firstapp";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 				TARGETED_DEVICE_FAMILY = "1,2";

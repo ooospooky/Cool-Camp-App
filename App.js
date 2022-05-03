@@ -9,9 +9,11 @@ import CampEdit from './screens/CampEdit';
 import CampCreate from './screens/CampCreate';
 import Login from './screens/Login';
 
+import * as eva from '@eva-design/eva';
+import { ApplicationProvider, Layout } from '@ui-kitten/components';
+
 
 const Stack = createNativeStackNavigator();
-
 
 export default function App() {
   return (
@@ -20,13 +22,19 @@ export default function App() {
     //   <StatusBar style="auto" />
     // </View>
     <NavigationContainer>
-    <Stack.Navigator>
+      <ApplicationProvider {...eva} theme={eva.light}>
+    <Stack.Navigator >
       <Stack.Screen  name="Home" component={HomeScreen} />
       <Stack.Screen  name="CampDetail" component={CampShow} />
       <Stack.Screen  name="CampEdit" component={CampEdit} />
       <Stack.Screen  name="CampCreate" component={CampCreate} />
-      <Stack.Screen  name="Login" component={Login} />
+      <Stack.Screen  name="會員中心" component={Login} options={{
+            gestureEnabled: false,
+            headerShown: true,
+            headerLeft: () => <></>,
+          }}/>
     </Stack.Navigator>
+    </ApplicationProvider>
   </NavigationContainer>
   );
 }

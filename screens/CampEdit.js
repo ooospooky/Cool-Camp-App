@@ -7,7 +7,18 @@ import  {collection, getDocs,setDoc, getDoc, addDoc, updateDoc, deleteDoc, doc} 
 
 // import RNPickerSelect from 'react-native-picker-select';
 const CampEdit = ({route,navigation}) => {
-  console.log(route.params.data.id)
+  console.log('editpage Info',route.params.userInfo)
+
+  let userInfo;
+  let accessToken;
+
+  if(route.params){
+    if(route.params.userInfo){
+      userInfo = route.params.userInfo;
+      accessToken = route.params.accessToken;
+    }
+  }
+
   const campData = route.params.data
   const [selectedLocationTag, setSelectedLocationTag] = useState(campData.locationTag);  //useState() put in value will be default
   const [selectedAdvantageTag, setSelectedAdvantageTag] = useState(campData.advantageTag);
@@ -26,8 +37,8 @@ const CampEdit = ({route,navigation}) => {
     await updateDoc(campDoc, editdata);
 
     let getData = await getDoc(doc(db,"camp",campData.id))
-    navigation.navigate('Home',{data:editdata}); //Go HomeScreen for reload camp data
-    navigation.navigate('CampDetail',{data:getData.data()}); //after reload data, go campShow to let user check what he/she update
+    navigation.navigate('Home',{data:editdata, userInfo:userInfo, accessToken:accessToken}); //Go HomeScreen for reload camp data
+    navigation.navigate('CampDetail',{data:getData.data(), userInfo:userInfo, accessToken:accessToken}); //after reload data, go campShow to let user check what he/she update
   }
   return (
     <ScrollView contentContainerStyle={{flexGrow: 1}}>
