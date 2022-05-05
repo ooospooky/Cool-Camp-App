@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View,TouchableOpacity, Button,Image} from 'react-native'
 import React,{useState,useEffect} from 'react'
 
-
+import Icon from 'react-native-vector-icons/AntDesign';
 import {signInWithGoogle} from '../firebase-config'
 
 import * as Google from 'expo-auth-session/providers/google';
@@ -94,16 +94,32 @@ const Login = ({navigation,route}) => {
         onPress={accessToken ? getUserData : () => { promptAsync({showInRecents: true}) }}
       />
       */}
-     <Button 
+     {/* <Button 
         title={accessToken ? "Logout" : "Login"}
         onPress={accessToken ? ()=>{logout()} : () => { promptAsync({showInRecents: true}) }}
-      />
+      /> */}
      
+     <TouchableOpacity
+        // title={accessToken ? "Logout" : "Login"}
+        onPress={accessToken ? ()=>{logout()} : () => { promptAsync({showInRecents: true}) }}>
+        <View style={styles.googleBtn}  >
+          {accessToken ? 
+            <Text style={{color:'#fff',fontWeight: "bold"}}> <Icon name="google" size={20}  /><Text style={{fontSize:20}} >  登出</Text> </Text>
+            : <Text style={{color:'#fff',fontWeight: "bold"}}> <Icon name="google" size={20}  /><Text style={{fontSize:20}} >  登入</Text> </Text>  }
+         </View>
+
+      </TouchableOpacity>
+
+
       {/* <RenderHomeButton /> */}
-      <Button 
-        title={accessToken ? "Back Home Page" : "Back Home Page"}
+      <TouchableOpacity
+        style={styles.Btn}
+        // title={accessToken ? "Back Home Page" : "Back Home Page"}
         onPress={accessToken ?()=>navigation.navigate('Home',{userInfo:userInfo,accessToken:accessToken}):()=>{navigation.navigate('Home',{userInfo:'',accessToken:''})}}
-      />
+      >
+        
+        <Text  style={{fontSize:20,color:'#fff'}}><Icon name="home" size={20}  /> 回到主頁面 </Text>
+      </TouchableOpacity>
      {/* <Button 
         title="Back Home Page"
         onPress={()=>navigation.navigate('Home',{userInfo:userInfo,accessToken:accessToken})}
@@ -139,6 +155,23 @@ const styles = StyleSheet.create({
   profilePic: {
     width: 130,
     height: 130,
-    top:-80
-  }
+    top:-50
+  },
+  googleBtn:{
+    padding:15,
+    paddingHorizontal:35,
+    backgroundColor:'red',
+    borderRadius:10,
+    marginTop:20,
+  },
+  Btn: {
+    height: 55,
+    width:'40%',
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: '#52c0b4',
+    marginHorizontal: 20,
+    borderRadius: 10,
+    margin:10
+  },
 })

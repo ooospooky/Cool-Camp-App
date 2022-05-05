@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, TextInput, Button, Alert,ScrollView ,KeyboardAvoidingView, TouchableWithoutFeedback,Keyboard,Platform} from 'react-native'
+import { StyleSheet, Text, View, TextInput,TouchableOpacity, Button, Alert,ScrollView ,KeyboardAvoidingView, TouchableWithoutFeedback,Keyboard,Platform} from 'react-native'
 import { useForm, Controller } from "react-hook-form";
 import React,{useState} from 'react'
 import {Picker} from '@react-native-picker/picker';
@@ -7,7 +7,7 @@ import  {collection, getDocs,setDoc, getDoc, addDoc, updateDoc, deleteDoc, doc} 
 
 // import RNPickerSelect from 'react-native-picker-select';
 const CampEdit = ({route,navigation}) => {
-  console.log('editpage Info',route.params.userInfo)
+  console.log('editpage Info',route.params)
 
   let userInfo;
   let accessToken;
@@ -24,15 +24,16 @@ const CampEdit = ({route,navigation}) => {
   const [selectedAdvantageTag, setSelectedAdvantageTag] = useState(campData.advantageTag);
   const { control, handleSubmit, formState: { errors } } = useForm({
     defaultValues: {
-      title: campData.title,  //if here doesn't set value,when uesr come edit page and do notthnig and then press submit,even thought there are default value set in textinput,it will still consider there are no value
-      description: campData.description,
-      location: campData.location,
-      notes:campData.notes,
-      locationTag: campData.locationTag,
-      advantageTag: campData.advantageTag
+      title: route.params.data.title,  //if here doesn't set value,when uesr come edit page and do notthnig and then press submit,even thought there are default value set in textinput,it will still consider there are no value
+      description: route.params.data.description,
+      location: route.params.data.location,
+      notes:route.params.data.notes,
+      locationTag: route.params.data.locationTag,
+      advantageTag: route.params.data.advantageTag
     }
   });
   const onSubmit = async(editdata) => {
+    console.log('sub',editdata)
     const campDoc = doc(db,'camp',route.params.data.id);
     await updateDoc(campDoc, editdata);
 
@@ -50,6 +51,7 @@ const CampEdit = ({route,navigation}) => {
       {/* keyboard.dissmiss : when you click outside keyboard, keyboard will dismiss */}
     <View style={styles.container}>
  
+
 
                     {/* 營地名稱 */}
       <Controller
@@ -117,8 +119,8 @@ const CampEdit = ({route,navigation}) => {
        <Controller
         control={control}
         rules={{
-         maxLength: 100,
-         required: true,
+         maxLength: 10000,
+         required: false,
         }}
         render={({ field: { onChange, onBlur, value } }) => (
           <TextInput
@@ -126,14 +128,14 @@ const CampEdit = ({route,navigation}) => {
             style={styles.textarea} 
             onBlur={onBlur}
             multiline={true}
-            numberOfLines={10}
-            onChangeText={onChange}
+            numberOfLines={50}
             defaultValue={campData.notes}
+            onChangeText={onChange}
           />
         )}
         name="notes"
       />
-      {errors.notes && <Text>This is required.</Text>}
+      {/* {errors.notes && <Text>This is required.</Text>} */}
 
           {/* 營地位置標籤 */}
       <Controller
@@ -187,8 +189,11 @@ const CampEdit = ({route,navigation}) => {
         )}
         name="advantageTag"
       />
-
-      <Button title="Submit" onPress={handleSubmit(onSubmit)} />
+    {/* <Button title="Submit" onPress={()=>handleSubmit(onSubmit)} /> */}
+    {/* <Button title="Submit" onPress={handleSubmit(onSubmit)} /> */}
+    <TouchableOpacity style={styles.submitBtn} onPress={handleSubmit(onSubmit)}>
+      <Text style={{color:'#fff',fontWeight:"bold",fontSize:15}}>確認修改</Text>
+    </TouchableOpacity>
     </View>
     </TouchableWithoutFeedback>
     </KeyboardAvoidingView>
@@ -218,6 +223,16 @@ const styles = StyleSheet.create({
     height: 40,
     backgroundColor: '#ec5990',
     borderRadius: 4,
+  },
+  submitBtn: {
+    height: 50 ,
+    width:130,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#52c0b4",
+    marginHorizontal: 20,
+    borderRadius: 10,
+    margin:30
   },
   // container: {
   //   flex: 1,

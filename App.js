@@ -11,11 +11,14 @@ import Login from './screens/Login';
 
 import * as eva from '@eva-design/eva';
 import { ApplicationProvider, Layout } from '@ui-kitten/components';
+import CampDelete from './screens/CampDelete';
+import CommentList from './screens/CommentList';
 
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
+  console.disableYellowBox = true;  //Just for demo
   return (
     // <View style={styles.container}>
     //   <Text>Open up App.js to start working on your app!</Text>
@@ -24,15 +27,27 @@ export default function App() {
     <NavigationContainer>
       <ApplicationProvider {...eva} theme={eva.light}>
     <Stack.Navigator >
-      <Stack.Screen  name="Home" component={HomeScreen} />
-      <Stack.Screen  name="CampDetail" component={CampShow} />
-      <Stack.Screen  name="CampEdit" component={CampEdit} />
+      <Stack.Screen  name="Home" component={HomeScreen} options={{
+        title:"Cool Camp",
+        headerTitleStyle: {
+          fontWeight: 'bold',
+        },
+        }} />
+      <Stack.Screen  name="CampDetail" component={CampShow} options={{
+        headerShown: false,
+          }}/>
+      <Stack.Screen  name="CampEdit" component={CampEdit} options={{
+        title:"修改露營地資訊"  }} />
+      <Stack.Screen  name="CampDelete" component={CampDelete} options={{
+        title:"刪除露營地"  }} />
       <Stack.Screen  name="CampCreate" component={CampCreate} />
       <Stack.Screen  name="會員中心" component={Login} options={{
             gestureEnabled: false,
             headerShown: true,
             headerLeft: () => <></>,
           }}/>
+      <Stack.Screen  name="CommentList" component={CommentList} options={{
+        title:"留言區"  }} />
     </Stack.Navigator>
     </ApplicationProvider>
   </NavigationContainer>

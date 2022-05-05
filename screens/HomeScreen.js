@@ -2,6 +2,7 @@ import { StyleSheet, ScrollView, Text, View,Style,TouchableOpacity, Animated, Im
 import React,{useEffect,useState} from 'react'
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import IconAnt from 'react-native-vector-icons/AntDesign';
 import {db} from '../firebase-config'
 import  {collection, getDocs,setDoc, getDoc, addDoc, updateDoc, deleteDoc, doc} from 'firebase/firestore';
 const HomeScreen = ({ navigation,route}) => {
@@ -23,14 +24,7 @@ const HomeScreen = ({ navigation,route}) => {
   const [campData,setCampData]  = useState([])
   const [item,setItem]  = useState('')
   useEffect(async()=>{
-    // if(route.params){
-    //   if(route.params.userInfo){
-    //     console.log('HOme access ',route.params.accessToken)
-    //     userInfo = route.params.userInfo;
-    //     accessToken = route.params.accessToken;
-    //   }
 
-    // }
     const campCollectionRef = collection(db,'camp')
     const data = await getDocs(campCollectionRef);
     const response =  data.docs.map((doc)=> ({...doc.data(),id:doc.id}));
@@ -39,7 +33,30 @@ const HomeScreen = ({ navigation,route}) => {
   
   },[route])    //[route] to check if data change,if true it will rerender list
 
-
+  function renderAverageStar(data){
+    if(!data.comment || data.comment.length===0){
+        return(
+          <View>
+            <Text style={{color: COLORS.grey}}>
+              Not rated yet.
+            </Text>
+          </View>
+        )
+      }else{
+        let total = 0;
+        for (let i = 0; i < data.comment.length; i++) {
+          total += data.comment[i].rating
+          }
+        let average = total / data.comment.length
+        return(
+          <View>
+           <Text style={{color: COLORS.grey}}> 
+             <Text style={{ fontSize: 20 }}>{average.toFixed(1)}</Text>/5
+            </Text>
+          </View> 
+        )
+      }
+    }
 
   console.log('userInfo',userInfo)
   
@@ -47,20 +64,20 @@ const HomeScreen = ({ navigation,route}) => {
    <ScrollView>
     <View style={styles.container}>
     {/* <View> */}
-      <Text>{userInfo?userInfo.name : ''}</Text>
 
       {/* Login page */}
-      <TouchableOpacity
+      <TouchableOpacity style={{marginTop:10,padding:10,borderRadius: 30,backgroundColor:COLORS.primary}}
         onPress={() => navigation.navigate('會員中心',{userInfo:userInfo,accessToken:accessToken})}
         >
-
-          <Text style={{color:'red'}}>會員中心</Text>
+          <Text style={{color:'#fff'}}><IconAnt name="user" size={17}  />會員中心</Text>
       </TouchableOpacity>
+      <Text style={{marginTop:10}}>{userInfo?`Welcome ${userInfo.name}`: ''}</Text>
    
       {/* List camp */}
       {campData.map((data)=>{
+  
         return (
-          <View key={data.id} style={{margin:40}} >
+          <View key={data.id} style={{marginBottom:60,marginTop:20}} >
             <TouchableOpacity onPress={() => navigation.navigate('CampDetail',{data:data,userInfo:userInfo,accessToken:accessToken})}>
             
             <Image
@@ -70,11 +87,11 @@ const HomeScreen = ({ navigation,route}) => {
               resizeMode={'cover'}
             />
                <Text>{data.title}</Text>  
-                {/* 白簡介 */}
+                {/* 簡介 */}
                <View style={styles.CardDetails}>
                     <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
                         <View>
-                            {/* 飯店名稱 */}
+                            {/* 名稱 */}
                             <Text style={{ fontSize: 17, fontWeight: "bold" }}>{data.title}</Text>
                             {/* 地址 */}
                             <Text style={{ fontSize: 12, color: COLORS.grey }}>{data.location}</Text>
@@ -97,7 +114,8 @@ const HomeScreen = ({ navigation,route}) => {
                             <Icon name="star" size={15} color={COLORS.orange} />
                             <Icon name="star" size={15} color={COLORS.grey} /> */}
                         </View>
-                        <Text style={{ fontSize: 10, color: COLORS.grey }}>365reviews</Text>
+                        {renderAverageStar(data)}
+                        {/* <Text style={{ fontSize: 10, color: COLORS.grey }}>365reviews</Text> */}
                     </View>
                 </View>
 
@@ -109,59 +127,16 @@ const HomeScreen = ({ navigation,route}) => {
 
 
       {/* Create Camp */}
+      {userInfo?
        <TouchableOpacity
-       style={{margin:40}}
-        onPress={() => navigation.navigate('CampCreate')}
+       style={styles.Btn}
+        onPress={() => navigation.navigate('CampCreate',{userInfo:userInfo,accessToken:accessToken})}
         >
-          <Text>CreateCamp</Text>
+          <Text>建立露營地</Text>
         </TouchableOpacity>
-
+      : null} 
     </View>
     </ScrollView>
-//     <View style={styles.container}>
-//     <Animated.View style={{ ...styles.Card }}>
-//     {/* 卡片 半透明變色 遮罩 */}
-//     <Animated.View style={{ ...styles.CardOverLay }} />
-//     {/* 右上角 價錢標籤 */}
-//     <View style={styles.PriceTag}>
-//         <Text style={{ color: COLORS.white, fontSize: 20, fontWeight: "bold" }}>123</Text>
-//     </View>
-//     {/* 房間圖片 */}
-//     <Image
-//         source="https://lh3.googleusercontent.com/a-/AOh14GjAsH0iUufyLRWc5-u6lWW8goMQwC445hiVDIwUrQ=s96-c"
-//         style={styles.CardImage}
-//     />
-//     {/* 房間簡介 */}
-//     <View style={styles.CardDetails}>
-//         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-//             <View>
-//                 {/* 飯店名稱 */}
-//                 <Text style={{ fontSize: 17, fontWeight: "bold" }}>dgdios</Text>
-//                 {/* 地址 */}
-//                 <Text style={{ fontSize: 12, color: COLORS.grey }}>Tapei</Text>
-//             </View>
-//             <Icon name="bookmark-border" size={26} color={COLORS.primary} />
-//         </View>
-//         {/* 飯店評價星數 點閱數 */}
-//         {/* 可改善的地方: 星數 跟瀏覽數 做成api 控制輸出 */}
-//         <View style={{
-//             flexDirection: 'row',
-//             justifyContent: 'space-between',
-//             marginTop: 10,
-//         }}>
-//             <View style={{ flexDirection: 'row' }}>
-//                 <Icon name="star" size={15} color={COLORS.orange} />
-//                 <Icon name="star" size={15} color={COLORS.orange} />
-//                 <Icon name="star" size={15} color={COLORS.orange} />
-//                 <Icon name="star" size={15} color={COLORS.orange} />
-//                 <Icon name="star" size={15} color={COLORS.grey} />
-//             </View>
-//             <Text style={{ fontSize: 10, color: COLORS.grey }}>365reviews</Text>
-//         </View>
-//     </View>
-// </Animated.View>
-
-// </View >
   )
 }
 // const styles = StyleSheet.create({})
@@ -182,6 +157,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
+    paddingBottom:60
   },
   Header: {
     flexDirection: "row",
@@ -268,7 +244,17 @@ TopHotelCardImage: {
     height: 80,
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
-}
+},
+Btn: {
+  height: 55,
+  width:'45%',
+  justifyContent: "center",
+  alignItems: "center",
+  backgroundColor: COLORS.primary,
+  marginHorizontal: 20,
+  borderRadius: 10,
+  margin:30
+},
 })
 export default HomeScreen
 

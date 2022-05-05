@@ -7,7 +7,16 @@ import {db} from '../firebase-config'
 import  {collection, getDocs,setDoc, getDoc, addDoc, updateDoc, deleteDoc, doc} from 'firebase/firestore';
 
 
-const CampCreate = ({navigation}) => {
+const CampCreate = ({navigation,route}) => {
+  let userInfo;
+  let accessToken;
+
+  if(route.params){
+    if(route.params.userInfo){
+      userInfo = route.params.userInfo;
+      accessToken = route.params.accessToken;
+    }
+  }
   const [selectedLocationTag, setSelectedLocationTag] = useState('');  //useState() put in value will be default
   const [selectedAdvantageTag, setSelectedAdvantageTag] = useState('');
   const { control, handleSubmit, formState: { errors } } = useForm({
@@ -25,12 +34,16 @@ const CampCreate = ({navigation}) => {
     const campCollectionRef = collection(db,'camp')
     let campId= ''
     console.log(createdata)
-    await addDoc(campCollectionRef, { ...createdata,"comment":[],"imageData":[]})
+    await addDoc(campCollectionRef, { ...createdata,"comment":[],"imageData":[],userId:route.params.userInfo.id})
     .then((e)=>{
         campId = e.id
     })
     await setDoc(doc(db,'camp',campId),{id:campId},{ merge: true })
-    navigation.navigate('Home',{data:createdata});
+    // navigation.navigate('Home',{data:createdata});
+    let getData = await getDoc(doc(db,"camp",campId))
+    navigation.navigate('Home',{data:createdata, userInfo:userInfo, accessToken:accessToken}); //Go HomeScreen for reload camp data
+    navigation.navigate('CampDetail',{data:getData.data(), userInfo:userInfo, accessToken:accessToken}); //after reload data, go campShow to let user check what he/she update
+
   }
   return (
     <ScrollView contentContainerStyle={{flexGrow: 1}}>
@@ -105,7 +118,7 @@ const CampCreate = ({navigation}) => {
        <Controller
         control={control}
         rules={{
-         maxLength: 100,
+         maxLength: 5000,
          required: true,
         }}
         render={({ field: { onChange, onBlur, value } }) => (
