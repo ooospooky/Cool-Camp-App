@@ -7,8 +7,6 @@ import  {collection, getDocs,setDoc, getDoc, addDoc, updateDoc, deleteDoc, doc} 
 
 // import RNPickerSelect from 'react-native-picker-select';
 const CampEdit = ({route,navigation}) => {
-  console.log('editpage Info',route.params)
-
   let userInfo;
   let accessToken;
 
@@ -33,7 +31,6 @@ const CampEdit = ({route,navigation}) => {
     }
   });
   const onSubmit = async(editdata) => {
-    console.log('sub',editdata)
     const campDoc = doc(db,'camp',route.params.data.id);
     await updateDoc(campDoc, editdata);
 
@@ -234,17 +231,8 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     margin:30
   },
-  // container: {
-  //   flex: 1,
-  //   justifyContent: 'center',
-  //   paddingTop: Constants.statusBarHeight,
-  //   padding: 8,
-  //   backgroundColor: '#0e101c',
-  // },
   input: {
     backgroundColor: 'white',
-    // border: '1px solid black',
-    // borderColor: 'red',
     borderWidth:2,
     borderColor: 'black',
     width:200,
@@ -255,8 +243,6 @@ const styles = StyleSheet.create({
   },
   textarea: {
     backgroundColor: 'white',
-    // border: '1px solid black',
-    // borderColor: 'red',
     borderWidth:2,
     borderColor: 'black',
     textAlignVertical: 'top',

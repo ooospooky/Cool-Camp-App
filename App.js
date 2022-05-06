@@ -40,7 +40,9 @@ export default function App() {
         title:"修改露營地資訊"  }} />
       <Stack.Screen  name="CampDelete" component={CampDelete} options={{
         title:"刪除露營地"  }} />
-      <Stack.Screen  name="CampCreate" component={CampCreate} />
+      <Stack.Screen  name="CampCreate" component={CampCreate} options={{
+         title:"建立露營地"
+      }} />
       <Stack.Screen  name="會員中心" component={Login} options={{
             gestureEnabled: false,
             headerShown: true,
