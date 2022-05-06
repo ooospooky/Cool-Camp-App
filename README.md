@@ -1,1 +1,0 @@
-# Cool-Camp-App
