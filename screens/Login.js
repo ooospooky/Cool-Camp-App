@@ -12,7 +12,8 @@ const Login = ({ navigation, route }) => {
   const [accessToken, setAccessToken] = useState(route.params.accessToken);
   const [userInfo, setUserInfo] = useState(route.params.userInfo);
   const [request, response, promptAsync] = Google.useAuthRequest({
-    expoClientId: "531290340545-p8n9krb5iqeqhja8hmhvf1lu9o292ko7.apps.googleusercontent.com"
+    expoClientId: "531290340545-p8n9krb5iqeqhja8hmhvf1lu9o292ko7.apps.googleusercontent.com",
+    iosClientId:"531290340545-f1l2kl7vcmsg9p3bh89pdihrme3ph183.apps.googleusercontent.com"
     , useProxy: true
   });
 
