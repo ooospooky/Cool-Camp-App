@@ -20,10 +20,6 @@ const Stack = createNativeStackNavigator();
 export default function App() {
   console.disableYellowBox = true;  //Just for demo
   return (
-    // <View style={styles.container}>
-    //   <Text>Open up App.js to start working on your app!</Text>
-    //   <StatusBar style="auto" />
-    // </View>
     <NavigationContainer>
       <ApplicationProvider {...eva} theme={eva.light}>
     <Stack.Navigator >
