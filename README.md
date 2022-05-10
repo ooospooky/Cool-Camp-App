@@ -16,6 +16,7 @@
 >Expo算是React Native中的框架，能使開發人員不需接觸原生的程式碼，只用JS撰寫App，打比方來說，如果React Native是河中的踏腳石，Expo就是連接兩端的橋樑。
 > 
 > 使用Expo的優點
+> 
 > 1. 只需撰寫JS，學習成本較低
 > 2. 不需要有Android Studio或Xcode即可運行撰寫出的android或ios的app
 > 3. 續2，亦即代表不用買macbook
@@ -34,8 +35,13 @@ Other: **Google Oauth login**
 
 Version control: **Git**
 
+## Screenshot
 
-### 開發架構：
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/80499340/167612422-05d55fdf-6685-47f5-82c5-9634139460d8.png"/ width="340" height="480">
+</p>
+
+### 開發架構
 ![截圖 2022-05-10 下午6 06 42](https://user-images.githubusercontent.com/80499340/167604697-54a26c91-a0f6-4894-9fc2-fbb9241568aa.png)
 
 
